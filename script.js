@@ -27,8 +27,10 @@ tiles.forEach( tile => {
     tile.addEventListener("mouseenter", () => {
         tile.classList.add("highlighted");
     });
-    tile.addEventListener("mouseleave", () => {
-        tile.classList.remove("highlighted");
-    });
+
+    // Uncommet the following to make it only when hovering
+    // tile.addEventListener("mouseleave", () => {
+    //     tile.classList.remove("highlighted");
+    // });
 });
 
