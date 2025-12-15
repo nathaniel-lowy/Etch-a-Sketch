@@ -37,6 +37,7 @@ function setUp() {
             const tile = document.createElement("div");
             tile.id = ((i * 16) + j);
             tile.classList.add("tile");
+            tile.style.backgroundColor = "rgb(255,255,255)";
             row.appendChild(tile);
         }
     }
@@ -47,15 +48,49 @@ function setUp() {
     // learning exercise
     const tiles = document.querySelectorAll(".tile");
     tiles.forEach(tile => {
-        tile.addEventListener("mouseenter", () => {
-            tile.classList.add("highlighted");
+        tile.addEventListener("mouseenter", (e) => {
+            // tile.classList.add("highlighted");
+            // console.log(e.target.style.backgroundColor);
+            adjustBackground(e);
+            // e.target.style.backgroundColor = "black";
+            //             console.log(e.target.style.backgroundColor);
+
+            
         });
 
-        // Uncommet the following to make it only when hovering
+        // Uncomment the following to make it only when hovering
         // tile.addEventListener("mouseleave", () => {
         //     tile.classList.remove("highlighted");
         // });
     });
+}
+
+function adjustBackground(e) {
+    let firstColor = e.target.style.backgroundColor;
+    console.log(firstColor);
+
+    let colorsString = firstColor.slice(4, firstColor.length - 1);
+    let colorArray = colorsString.split(', ');
+
+    let red = Number(colorArray[0]);
+    // 1/10 from current
+    // oneTenthRed = (255 - red) / 10;
+
+    oneTenth = (255 / 10);
+
+    console.log(colorArray);
+    console.log(typeof colorArray[0]);
+    console.log(colorArray[0]);
+
+    const newColorArray = colorArray.map(value => value - 25.5);
+
+    console.log(newColorArray);
+
+    const newColor = "rgb(" + newColorArray.join(', ') + ")";
+
+    console.log(newColor);
+
+    e.target.style.backgroundColor = newColor;
 }
 
 setUp();
