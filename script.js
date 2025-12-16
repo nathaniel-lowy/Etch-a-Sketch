@@ -1,9 +1,11 @@
 let size = 16;
+let blackAndWhite = true;
 const container = document.querySelector("#container");
-const btn = document.querySelector("button");
+const btnSize = document.querySelector("#size");
+const btnColor = document.querySelector("#color");
 
 // Instead of a do-while, this method allows for giving feedback in the event of an invalid choice
-btn.addEventListener("click", () => {
+btnSize.addEventListener("click", () => {
     let newSize = Number(prompt("Enter the new number of tiles per side:", size));
     while (newSize > 100 || !newSize) {
         newSize = Number(prompt(
@@ -16,12 +18,27 @@ btn.addEventListener("click", () => {
     setUp();
 });
 
+btnColor.addEventListener("click", ()=> {
+    blackAndWhite = !blackAndWhite;
+    tearDown();
+    setUp();
+})
+
 
 function tearDown() {
     const rows = document.querySelectorAll(".row");
     rows.forEach(row => {
         container.removeChild(row);
     });
+}
+
+// Assign each value to be from 200-239 so that color is not too light or dark
+function randomColor() {
+    const r = Math.random() * 40 + 200;
+    const g = Math.random() * 40 + 200;
+    const b = Math.random() * 40 + 200;
+
+    return "rgb(" + r + ", " + g + ", " + b + ")";
 }
 
 
@@ -50,47 +67,23 @@ function setUp() {
     tiles.forEach(tile => {
         tile.addEventListener("mouseenter", (e) => {
             // tile.classList.add("highlighted");
-            // console.log(e.target.style.backgroundColor);
             adjustBackground(e);
-            // e.target.style.backgroundColor = "black";
-            //             console.log(e.target.style.backgroundColor);
-
-            
         });
-
-        // Uncomment the following to make it only when hovering
-        // tile.addEventListener("mouseleave", () => {
-        //     tile.classList.remove("highlighted");
-        // });
     });
 }
 
 function adjustBackground(e) {
     let firstColor = e.target.style.backgroundColor;
-    console.log(firstColor);
-
-    let colorsString = firstColor.slice(4, firstColor.length - 1);
-    let colorArray = colorsString.split(', ');
-
-    let red = Number(colorArray[0]);
-    // 1/10 from current
-    // oneTenthRed = (255 - red) / 10;
-
-    oneTenth = (255 / 10);
-
-    console.log(colorArray);
-    console.log(typeof colorArray[0]);
-    console.log(colorArray[0]);
-
-    const newColorArray = colorArray.map(value => value - 25.5);
-
-    console.log(newColorArray);
-
-    const newColor = "rgb(" + newColorArray.join(', ') + ")";
-
-    console.log(newColor);
-
-    e.target.style.backgroundColor = newColor;
+    // If the color is white, create an initial value for it
+    if (firstColor === "rgb(255, 255, 255)" && !blackAndWhite) {
+        e.target.style.backgroundColor = randomColor();
+        return;
+    }
+    decreaseAmount = (255 / 10);
+    const colorArray = firstColor.slice(4, firstColor.length - 1).split(', ');
+    const newColorArray = colorArray.map(value => value - decreaseAmount);
+    const newColorString = "rgb(" + newColorArray.join(', ') + ")";
+    e.target.style.backgroundColor = newColorString;
 }
 
 setUp();
